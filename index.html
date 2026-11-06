@@ -1,0 +1,1322 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>قضیه تالس | آموزش تعاملی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060f;
+  --cyan:#00f0ff;
+  --magenta:#ff2fd0;
+  --lime:#9dff00;
+  --yellow:#ffe600;
+  --purple:#a06bff;
+  --text:#e6e9ff;
+  --muted:#8fa8c8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Vazirmatn',Tahoma,Arial,sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:62px;line-height:1.85;
+  background-image: radial-gradient(circle at 12% 6%, rgba(0,240,255,.13), transparent 42%), radial-gradient(circle at 88% 16%, rgba(255,47,208,.13), transparent 42%), radial-gradient(circle at 50% 96%, rgba(157,255,0,.09), transparent 45%);
+  background-attachment:fixed;
+}
+header{ text-align:center; padding:22px 14px 8px; }
+header h1{
+  margin:0; font-size:26px; font-weight:900; letter-spacing:.5px;
+  background:linear-gradient(90deg,#00f0ff,#a06bff,#ff2fd0);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 14px rgba(0,240,255,.45));
+}
+header p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+
+.nav{ position:sticky;top:0;z-index:80;display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:rgba(6,6,15,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,240,255,.18);scrollbar-width:none; }
+.nav::-webkit-scrollbar{display:none}
+.nav button{ flex:0 0 auto;padding:8px 14px;border-radius:20px;border:1px solid rgba(0,240,255,.32);background:rgba(0,240,255,.05);color:#9fe8ff;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:.25s; }
+.nav button:active{transform:scale(.95)}
+.nav button.active{ background:linear-gradient(135deg,#00f0ff,#a06bff);color:#04121a;font-weight:900;border-color:transparent;box-shadow:0 0 18px rgba(0,240,255,.65); }
+
+main{max-width:780px;margin:0 auto;padding:0 12px}
+.page{display:none;padding:16px 0 34px;animation:fade .4s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.card{ background:linear-gradient(160deg, rgba(20,20,48,.95), rgba(9,9,24,.96));border:1px solid rgba(0,240,255,.2);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 0 26px rgba(0,240,255,.06), inset 0 1px 0 rgba(255,255,255,.045); }
+.card.magenta{border-color:rgba(255,47,208,.28);box-shadow:0 0 26px rgba(255,47,208,.08), inset 0 1px 0 rgba(255,255,255,.045)}
+.card.lime{border-color:rgba(157,255,0,.28);box-shadow:0 0 26px rgba(157,255,0,.07), inset 0 1px 0 rgba(255,255,255,.045)}
+
+h2{ font-size:19px;margin:0 0 10px;color:var(--cyan);text-shadow:0 0 16px rgba(0,240,255,.55); }
+h3{ font-size:16px;margin:16px 0 8px;color:var(--magenta);text-shadow:0 0 14px rgba(255,47,208,.45); }
+h3:first-child{margin-top:0}
+p{margin:8px 0;font-size:14.5px}
+ul,ol{margin:8px 0;padding-inline-start:20px;font-size:14.5px}
+li{margin:5px 0}
+b.hl{color:var(--yellow);text-shadow:0 0 10px rgba(255,230,0,.5)}
+
+/* ---------- Math Formatting ---------- */
+.math-block { direction: ltr; unicode-bidi: isolate; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5em; font-size: 1.1em; padding: 12px; background: rgba(0,240,255,.055); border: 1px dashed rgba(0,240,255,.32); border-radius: 14px; margin: 12px 0; overflow-x: auto; color: #bff9ff; font-family: 'Cambria Math', 'Times New Roman', serif; }
+.frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .2em; line-height: 1.2; direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
+.frac > .num { display: block; padding: 0 .4em 2px; border-bottom: 1.5px solid currentColor; }
+.frac > .den { display: block; padding: 2px .4em 0; }
+.eq { color: var(--yellow); font-weight: 700; }
+.par-sym { display: inline-flex; gap: .15em; height: 1.05em; vertical-align: -.12em; margin: 0 .15em; }
+.par-sym::before, .par-sym::after { content: ''; width: .15em; height: 100%; background: currentColor; border-radius: 1px; }
+
+/* ---------- Interactive Proof Styles ---------- */
+.proof-container{ background: rgba(0,0,0,0.2);border: 1px solid rgba(160,107,255,.3);border-radius: 16px;padding: 12px;margin: 16px 0; }
+.proof-controls{ display: flex;justify-content: space-between; align-items: center;margin-top: 12px;gap: 10px; }
+.proof-btn{ background: rgba(160,107,255,.15);border: 1px solid rgba(160,107,255,.4);color: #dcd0ff;padding: 10px 16px;border-radius: 10px;cursor: pointer;font-family: inherit;font-weight: 700;transition: .2s; }
+.proof-btn:active{transform: scale(.95);}
+.proof-btn:disabled{opacity: .3; pointer-events: none;}
+.proof-btn.primary{ background: linear-gradient(135deg, #a06bff, #00f0ff);color: #000;border: none; }
+.proof-step-display{ background: rgba(255,255,255,.03);border-radius: 12px;padding: 14px;font-size: 14.5px;min-height: 150px;margin-bottom: 12px;border-right: 4px solid var(--purple);line-height: 1.8; }
+.proof-step-display .title{ color: var(--purple);font-weight: 900;font-size: 16px;margin-bottom: 8px;display: block; }
+
+/* SVG interactive classes */
+svg .shape-base { transition: all 0.4s ease; }
+svg .label { font-family: 'Vazirmatn'; font-weight: 700; font-size: 14px; fill: #fff; text-anchor: middle; direction: ltr;}
+svg .line-base { stroke: #5a6a8a; stroke-width: 2.5; stroke-linecap: round; transition: all 0.4s; }
+svg .line-parallel { stroke: var(--cyan); stroke-width: 3; stroke-dasharray: 6 4; transition: all 0.4s; }
+svg .line-aux { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 8 6; transition: all 0.4s; }
+svg .line-height { stroke: var(--yellow); stroke-width: 2; stroke-dasharray: 4 4; transition: all 0.4s; }
+svg .line-extend { stroke: var(--cyan); stroke-width: 2; stroke-dasharray: 8 6; transition: all 0.4s; }
+svg .line-sun { stroke: var(--yellow); stroke-width: 2; stroke-dasharray: 10 6; transition: all 0.4s; }
+
+/* Highlights */
+.hl-cyan { fill: rgba(0, 240, 255, 0.25) !important; stroke: var(--cyan) !important; filter: drop-shadow(0 0 8px rgba(0,240,255,.6)); }
+.hl-magenta { fill: rgba(255, 47, 208, 0.25) !important; stroke: var(--magenta) !important; filter: drop-shadow(0 0 8px rgba(255,47,208,.6)); }
+.hl-lime { fill: rgba(157, 255, 0, 0.25) !important; stroke: var(--lime) !important; filter: drop-shadow(0 0 8px rgba(157,255,0,.6)); }
+.hl-yellow { fill: rgba(255, 230, 0, 0.25) !important; stroke: var(--yellow) !important; filter: drop-shadow(0 0 8px rgba(255,230,0,.6)); }
+
+.figwrap{ display:flex;justify-content:center;background:radial-gradient(circle at 50% 40%, rgba(0,240,255,.07), transparent 70%);border-radius:16px;padding:6px;margin:10px 0; }
+svg{width:100%;max-width:420px;height:auto;display:block}
+svg text{ font-family:'Vazirmatn',Tahoma,sans-serif;font-weight:700;font-size:14px;text-anchor:middle;direction:ltr;fill:#ffffff; }
+.tri{fill:rgba(160,107,255,.08);stroke:#a06bff;stroke-width:2.4;stroke-linejoin:round;}
+
+/* ---------- buttons & misc ---------- */
+.btn{ display:inline-block;padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;font-weight:900;font-size:14px;background:linear-gradient(135deg,#00f0ff,#a06bff);color:#04121a;box-shadow:0 0 18px rgba(0,240,255,.45);transition:.2s; }
+.btn:active{transform:scale(.96)}
+.btn.ghost{ background:transparent;color:var(--cyan);border:1px solid rgba(0,240,255,.45);box-shadow:0 0 12px rgba(0,240,255,.15); }
+.btn.mag{background:linear-gradient(135deg,#ff2fd0,#a06bff);box-shadow:0 0 18px rgba(255,47,208,.45);color:#fff}
+.note{ border-inline-start:4px solid var(--yellow);background:rgba(255,230,0,.07);border-radius:0 12px 12px 0;padding:10px 13px;margin:12px 0;font-size:14px; }
+.note.pink{border-inline-start-color:var(--magenta);background:rgba(255,47,208,.07)}
+.note.green{border-inline-start-color:var(--lime);background:rgba(157,255,0,.07)}
+.note.cyan{border-inline-start-color:var(--cyan);background:rgba(0,240,255,.07)}
+.note strong{color:var(--yellow)}
+.note.pink strong{color:var(--magenta)}
+.note.green strong{color:var(--lime)}
+.note.cyan strong{color:var(--cyan)}
+
+.solution{ display:none;margin-top:10px;background:rgba(157,255,0,.06);border:1px solid rgba(157,255,0,.28);border-radius:13px;padding:12px;font-size:14px;animation:fade .35s; }
+.solution.show{display:block}
+.solution .st{color:var(--lime);font-weight:900;margin-bottom:6px}
+.solution .step{margin:6px 0;padding-right:14px;border-right:2px solid rgba(157,255,0,.3)}
+
+/* Fix Layout Shift in Converse */
+.ro { min-height: 65px; display: flex; flex-direction: column; justify-content: center; }
+.ro b { min-width: 45px; display: inline-block; margin: 0 auto; }
+.msg { min-height: 52px; display: flex; align-items: center; justify-content: center; padding: 10px; text-align: center; }
+
+footer{ position:fixed;bottom:0;left:0;right:0;z-index:90;text-align:center;padding:9px 10px;font-size:12.5px;color:#9fb6d6;background:rgba(6,6,15,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(0,240,255,.18);letter-spacing:.3px; }
+footer b{ background:linear-gradient(90deg,#00f0ff,#ff2fd0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:900; }
+.nextbtn{text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📐 قضیه تالس</h1>
+  <p>سفری تعاملی به دنیای تناسب و خطوط موازی</p>
+</header>
+
+<nav class="nav" id="nav">
+  <button data-page="p-home" class="active">🏠 خانه</button>
+  <button data-page="p-lesson">📘 قضیه تالس</button>
+  <button data-page="p-forms">🔀 تعمیم و نتایج</button>
+  <button data-page="p-converse">🔄 عکس قضیه</button>
+  <button data-page="p-examples">✏️ مثال‌ها</button>
+  <button data-page="p-apply">🌍 کاربردها</button>
+  <button data-page="p-quiz">🎯 آزمون</button>
+</nav>
+
+<main>
+
+<!-- ================= HOME ================= -->
+<section class="page active" id="p-home">
+  <div class="card">
+    <div class="hero" style="text-align:center;padding:8px 0 4px;">
+      <div style="font-size:44px;line-height:1;">📐✨</div>
+      <h2>به دنیای قضیه تالس خوش آمدی!</h2>
+      <p>اینجا قرار است یک قضیه‌ی مهم هندسه را نه با حفظ کردن، بلکه با <b class="hl">دیدن، لمس کردن و کشف کردن</b> یاد بگیری.</p>
+    </div>
+  </div>
+
+  <div class="card magenta">
+    <h3>در این سفر چه چیزهایی یاد می‌گیری؟</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+      <div style="background:rgba(160,107,255,.08);border:1px solid rgba(160,107,255,.28);border-radius:14px;padding:12px;font-size:13.5px;"><span style="font-size:22px;display:block;margin-bottom:4px;">🧩</span><b>قضیه تالس</b><br>صورت اصلی و مفهوم تناسب</div>
+      <div style="background:rgba(160,107,255,.08);border:1px solid rgba(160,107,255,.28);border-radius:14px;padding:12px;font-size:13.5px;"><span style="font-size:22px;display:block;margin-bottom:4px;">🧠</span><b>اثبات تعاملی مساحت</b><br>گام به گام با رنگ‌های نئونی</div>
+      <div style="background:rgba(160,107,255,.08);border:1px solid rgba(160,107,255,.28);border-radius:14px;padding:12px;font-size:13.5px;"><span style="font-size:22px;display:block;margin-bottom:4px;">🔀</span><b>تعمیم و نتایج</b><br>جزء به کل، جمع، تفاضل و...</div>
+      <div style="background:rgba(160,107,255,.08);border:1px solid rgba(160,107,255,.28);border-radius:14px;padding:12px;font-size:13.5px;"><span style="font-size:22px;display:block;margin-bottom:4px;">🔄</span><b>عکس قضیه</b><br>ابزار طلایی اثبات موازی بودن</div>
+    </div>
+  </div>
+
+  <div class="nextbtn">
+    <button class="btn" onclick="goPage('p-lesson')">شروع قضیه تالس 🚀</button>
+  </div>
+</section>
+
+<!-- ================= LESSON ================= -->
+<section class="page" id="p-lesson">
+  <div class="card">
+    <h2>📘 تالس کیست؟</h2>
+    <p><b class="hl">تالس ملطی</b> (حدود ۶۲۴ تا ۵۴۶ پیش از میلاد) یکی از نخستین ریاضی‌دانان و فیلسوفان یونان باستان بود. او اولین کسی است که به‌جای تکیه بر افسانه، سعی کرد پدیده‌های طبیعی را با <b class="hl">استدلال منطقی</b> توضیح دهد.</p>
+    <p>می‌گویند تالس با استفاده از همین قضیه توانست <b class="hl">ارتفاع هرم بزرگ خئوپس</b> را بدون بالا رفتن از آن اندازه بگیرد! 😲</p>
+  </div>
+
+  <div class="card magenta">
+    <h2>🧩 صورت قضیه تالس</h2>
+    <p>در مثلث <span class="m">ABC</span>، اگر خط <span class="m">DE</span> موازی <span class="m">BC</span> باشد، نسبت پاره‌های ایجاد شده روی دو ضلع با هم برابر است:</p>
+
+    <div class="math-block">
+      <span><span class="m">DE</span> <span class="par-sym"></span> <span class="m">BC</span></span>
+      <span class="eq">⟹</span>
+      <span class="frac"><span class="num">AD</span><span class="den">DB</span></span>
+      <span class="eq">=</span>
+      <span class="frac"><span class="num">AE</span><span class="den">EC</span></span>
+    </div>
+
+    <p>برای اثبات این قضیه، از <b class="hl">مساحت مثلث‌ها</b> استفاده می‌کنیم. دکمه‌ی «مرحله بعد» را بزنید و تغییر رنگ‌ها را در شکل تماشا کنید.</p>
+
+    <!-- ===== PROOF 1: AREA METHOD ===== -->
+    <div class="proof-container" id="proof1">
+      <div class="proof-step-display" id="p1-text"></div>
+      
+      <div class="figwrap" style="background: rgba(0,0,0,0.3); padding: 10px;">
+        <svg id="svg-p1" viewBox="0 0 400 350">
+          <polygon points="200,50 50,310 350,310" fill="rgba(160,107,255,.05)" stroke="#a06bff" stroke-width="2.4" stroke-linejoin="round" />
+          
+          <line x1="140" y1="154" x2="260" y2="154" class="line-base line-parallel" id="p1-line-de" opacity="0"/>
+          <circle cx="140" cy="154" r="4" fill="#ff2fd0" id="p1-pt-d" opacity="0"/>
+          <circle cx="260" cy="154" r="4" fill="#9dff00" id="p1-pt-e" opacity="0"/>
+          
+          <line x1="50" y1="310" x2="260" y2="154" class="line-aux" id="p1-line-be" style="opacity:0;"/>
+          <line x1="350" y1="310" x2="140" y2="154" class="line-aux" id="p1-line-cd" style="opacity:0;"/>
+          
+          <line x1="260" y1="154" x2="170" y2="102.1" class="line-height" id="p1-line-eh" style="opacity:0;"/>
+          <path d="M 178.65 107.09 L 183.65 98.41 L 175 93.42" fill="none" stroke="#ffe600" stroke-width="1.5" id="p1-ra-eh" style="opacity:0;"/>
+          
+          <line x1="140" y1="154" x2="230" y2="102.1" class="line-height" id="p1-line-dh" style="opacity:0;"/>
+          <path d="M 221.35 107.09 L 216.35 98.41 L 225 93.42" fill="none" stroke="#ffe600" stroke-width="1.5" id="p1-ra-dh" style="opacity:0;"/>
+          
+          <line x1="30" y1="154" x2="370" y2="154" class="line-extend" id="p1-line-ext" style="opacity:0;"/>
+
+          <line x1="50" y1="310" x2="50" y2="154" class="line-height" id="p1-line-bm" style="opacity:0;"/>
+          <path d="M 50 164 L 60 164 L 60 154" fill="none" stroke="#ffe600" stroke-width="1.5" id="p1-ra-bm" style="opacity:0;"/>
+          
+          <line x1="350" y1="310" x2="350" y2="154" class="line-height" id="p1-line-cn" style="opacity:0;"/>
+          <path d="M 350 164 L 340 164 L 340 154" fill="none" stroke="#ffe600" stroke-width="1.5" id="p1-ra-cn" style="opacity:0;"/>
+
+          <polygon points="200,50 140,154 260,154" id="p1-tri-ade" fill="transparent" />
+          <polygon points="50,310 140,154 260,154" id="p1-tri-deb" fill="transparent" />
+          <polygon points="350,310 140,154 260,154" id="p1-tri-dec" fill="transparent" />
+
+          <text x="200" y="40" class="label">A</text>
+          <text x="35" y="325" class="label">B</text>
+          <text x="365" y="325" class="label">C</text>
+          <text x="125" y="148" class="label" id="p1-lbl-d" opacity="0">D</text>
+          <text x="275" y="148" class="label" id="p1-lbl-e" opacity="0">E</text>
+          
+          <text x="155" y="95" class="label" fill="#ffe600" id="p1-lbl-h1" style="opacity:0;">H₁</text>
+          <text x="245" y="95" class="label" fill="#ffe600" id="p1-lbl-h2" style="opacity:0;">H₂</text>
+          <text x="35" y="160" class="label" fill="#ffe600" id="p1-lbl-m" style="opacity:0;">M</text>
+          <text x="365" y="160" class="label" fill="#ffe600" id="p1-lbl-n" style="opacity:0;">N</text>
+        </svg>
+      </div>
+
+      <div class="proof-controls">
+        <button class="proof-btn" onclick="prevStep1()" id="p1-btn-prev" disabled>مرحله قبل</button>
+        <button class="proof-btn primary" onclick="nextStep1()" id="p1-btn-next">شروع اثبات</button>
+      </div>
+    </div>
+    
+    <div class="math-block" id="p1-formula" style="opacity:0; min-height: 60px; display: none;"></div>
+  </div>
+
+  <div class="nextbtn">
+    <button class="btn" onclick="goPage('p-forms')">تعمیم و نتایج قضیه ➡️</button>
+  </div>
+</section>
+
+<!-- ================= FORMS (Generalization) ================= -->
+<section class="page" id="p-forms">
+  <div class="card">
+    <h2>🔀 تعمیم و نتایج قضیه تالس</h2>
+    <p>با استفاده از ویژگی‌های نسبت و تناسب، می‌توان از قضیه تالس نتایج بسیار مهمی گرفت.</p>
+  </div>
+
+  <div class="card magenta">
+    <h3>۱️⃣ نتایج با استفاده از ویژگی‌های تناسب</h3>
+    <p>از مرحله اول و دوم (یعنی <span class="frac"><span class="num">AD</span><span class="den">DB</span></span> = <span class="frac"><span class="num">AE</span><span class="den">EC</span></span>) نتایج زیر به دست می‌آید:</p>
+
+    <div class="note pink">
+      <strong>الف) وارون کردن (جزء به جزء معکوس):</strong><br>
+      <div class="math-block" style="margin:8px 0; padding:8px;">
+        <span class="frac"><span class="num">BD</span><span class="den">AD</span></span>
+        <span class="eq">=</span>
+        <span class="frac"><span class="num">CE</span><span class="den">AE</span></span>
+      </div>
+    </div>
+
+    <div class="note pink">
+      <strong>ب) ترکیب مخرج‌ها (جزء به کل):</strong><br>
+      اگر به صورت کسر، مخرج‌ها را با صورت‌ها جمع کنیم:<br>
+      <div class="math-block" style="margin:8px 0; padding:8px;">
+        <span class="frac"><span class="num">AD</span><span class="den">AD + DB</span></span>
+        <span class="eq">=</span>
+        <span class="frac"><span class="num">AE</span><span class="den">AE + EC</span></span>
+        <span class="eq">⟹</span>
+        <span class="frac"><span class="num">AD</span><span class="den">AB</span></span>
+        <span class="eq">=</span>
+        <span class="frac"><span class="num">AE</span><span class="den">AC</span></span>
+      </div>
+    </div>
+
+    <div class="note pink">
+      <strong>ج) ترکیب صورت‌ها (کل به جزء):</strong><br>
+      اگر به صورت کسر، صورت‌ها را با مخرج‌ها جمع کنیم:<br>
+      <div class="math-block" style="margin:8px 0; padding:8px;">
+        <span class="frac"><span class="num">AD + DB</span><span class="den">DB</span></span>
+        <span class="eq">=</span>
+        <span class="frac"><span class="num">AE + EC</span><span class="den">EC</span></span>
+        <span class="eq">⟹</span>
+        <span class="frac"><span class="num">AB</span><span class="den">DB</span></span>
+        <span class="eq">=</span>
+        <span class="frac"><span class="num">AC</span><span class="den">EC</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROOF 2: PARALLELOGRAM ===== -->
+  <div class="card lime">
+    <h3>۲️⃣ تعمیم با رسم متوازی‌الاضلاع</h3>
+    <p>مرحله سوم تصویر کتاب: اگر از E خطی موازی AB رسم کنیم تا BC را در F قطع کند، می‌توانیم ارتباط با ضلع سوم (DE و BC) را پیدا کنیم.</p>
+
+    <div class="proof-container" id="proof2" style="border-color: rgba(157,255,0,.3);">
+      <div class="proof-step-display" id="p2-text" style="border-right-color: var(--lime);"></div>
+      
+      <div class="figwrap" style="background: rgba(0,0,0,0.3); padding: 10px;">
+        <svg id="svg-p2" viewBox="0 0 400 350">
+          <polygon points="200,50 50,310 350,310" fill="rgba(160,107,255,.05)" stroke="#a06bff" stroke-width="2.4" stroke-linejoin="round" />
+          
+          <line x1="140" y1="154" x2="260" y2="154" class="line-base line-parallel" id="p2-line-de"/>
+          <circle cx="140" cy="154" r="4" fill="#ff2fd0" />
+          <circle cx="260" cy="154" r="4" fill="#9dff00" />
+          
+          <line x1="260" y1="154" x2="150" y2="310" class="line-base line-parallel" id="p2-line-ef" style="opacity:0;"/>
+          
+          <polygon points="140,154 50,310 150,310 260,154" id="p2-para-dbfe" fill="rgba(160,107,255,.1)" stroke="#a06bff" stroke-width="1.5" stroke-dasharray="4 4" style="opacity:0;" />
+
+          <line x1="50" y1="310" x2="150" y2="310" class="line-base" id="p2-seg-bf" style="opacity:0; stroke: var(--lime); stroke-width: 6; stroke-linecap: round;"/>
+          <line x1="140" y1="154" x2="260" y2="154" class="line-base" id="p2-seg-de" style="opacity:0; stroke: var(--cyan); stroke-width: 6; stroke-linecap: round;"/>
+
+          <circle cx="150" cy="310" r="4" fill="#ffe600" id="p2-pt-f" style="opacity:0;"/>
+
+          <text x="200" y="40" class="label">A</text>
+          <text x="35" y="325" class="label">B</text>
+          <text x="365" y="325" class="label">C</text>
+          <text x="125" y="148" class="label">D</text>
+          <text x="275" y="148" class="label">E</text>
+          <text x="135" y="330" class="label" id="p2-lbl-f" style="opacity:0;">F</text>
+        </svg>
+      </div>
+
+      <div class="proof-controls">
+        <button class="proof-btn" onclick="prevStep2()" id="p2-btn-prev" disabled>مرحله قبل</button>
+        <button class="proof-btn primary" onclick="nextStep2()" id="p2-btn-next" style="background: linear-gradient(135deg, #9dff00, #00f0ff); color:#000;">شروع اثبات</button>
+      </div>
+    </div>
+
+    <div class="math-block" id="p2-formula" style="opacity:0; min-height: 60px; display: none;"></div>
+  </div>
+
+  <div class="nextbtn">
+    <button class="btn mag" onclick="goPage('p-converse')">عکس قضیه تالس 🔄</button>
+  </div>
+</section>
+
+<!-- ================= CONVERSE ================= -->
+<section class="page" id="p-converse">
+  <div class="card">
+    <h2>🔄 عکس قضیه تالس</h2>
+    <p>قضیه تالس می‌گوید: «موازی باشند ⟶ تناسب ایجاد می‌شود.»</p>
+    <p>عکس قضیه می‌گوید: «تناسب ایجاد شود ⟶ موازی هستند!»</p>
+
+    <div class="note pink">
+      <strong>صورت عکس قضیه:</strong> اگر خطی دو ضلع مثلث را طوری قطع کند که روی آن دو ضلع، پاره‌های <b>متناسب</b> ایجاد شود، آن خط <b>با ضلع سوم موازی است</b>.
+    </div>
+
+    <div class="math-block">
+      <span class="frac"><span class="num">AD</span><span class="den">DB</span></span>
+      <span class="eq">=</span>
+      <span class="frac"><span class="num">AE</span><span class="den">EC</span></span>
+      <span class="eq">⟹</span>
+      <span class="m">DE</span>
+      <span class="par-sym"></span>
+      <span class="m">BC</span>
+    </div>
+  </div>
+
+  <div class="card magenta">
+    <h3>🎮 آزمایش کن!</h3>
+    <p>دو دستگیره را طوری تنظیم کن که نسبت‌ها <b class="hl">برابر</b> شوند و ببین خط DE چه رنگی می‌شود!</p>
+
+    <div class="figwrap">
+      <svg id="svgC" viewBox="0 0 400 380" aria-label="شکل عکس قضیه تالس"></svg>
+    </div>
+
+    <div class="ctrl">
+      <label>جای نقطه D روی AB <b id="lCD">40</b>%</label>
+      <input type="range" id="cD" min="12" max="88" value="40" step="1">
+    </div>
+    <div class="ctrl">
+      <label>جای نقطه E روی AC <b id="lCE">60</b>%</label>
+      <input type="range" id="cE" min="12" max="88" value="60" step="1">
+    </div>
+
+    <div class="readout" style="grid-template-columns:repeat(2,1fr); margin-bottom: 10px;">
+      <div class="ro"><span>AD / DB</span><b id="cR1">–</b></div>
+      <div class="ro"><span>AE / EC</span><b id="cR2">–</b></div>
+    </div>
+
+    <div class="msg bad" id="cMsg">نسبت‌ها برابر نیستند ⟶ DE موازی BC نیست ❌</div>
+
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn ghost" onclick="snapParallel()">موازی‌اش کن! 🔒</button>
+    </div>
+  </div>
+  
+  <div class="nextbtn">
+    <button class="btn" onclick="goPage('p-examples')">مثال‌های حل‌شده ✏️</button>
+  </div>
+</section>
+
+<!-- ================= EXAMPLES ================= -->
+<section class="page" id="p-examples">
+  <div class="card">
+    <h2>✏️ مثال‌های حل‌شده</h2>
+    <p>سعی کن اول خودت حل کنی، بعد پاسخ را ببین. 😉</p>
+  </div>
+
+  <div class="card magenta">
+    <h3>مثال ۱ (مطابق مثال ۲۹ کتاب)</h3>
+    <p>در شکل زیر، <span class="m">PQ</span> <span class="par-sym"></span> <span class="m">BC</span> است. مقدار <span class="m">x</span> را حساب کنید.</p>
+    
+    <div class="figwrap">
+      <svg viewBox="0 0 400 320">
+        <polygon points="200,40 80,260 320,260" fill="rgba(160,107,255,.12)" stroke="#a06bff" stroke-width="2.4" stroke-linejoin="round"/>
+        <line x1="155" y1="122.5" x2="245" y2="122.5" stroke="#00f0ff" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="200" cy="40" r="4" fill="#ffe600"/>
+        <circle cx="80" cy="260" r="4" fill="#ff2fd0"/>
+        <circle cx="320" cy="260" r="4" fill="#ff2fd0"/>
+        <circle cx="155" cy="122.5" r="4" fill="#9dff00"/>
+        <circle cx="245" cy="122.5" r="4" fill="#9dff00"/>
+        <text x="200" y="28" fill="#fff" font-weight="bold" font-size="14">A</text>
+        <text x="66" y="278" fill="#fff" font-weight="bold" font-size="14">B</text>
+        <text x="334" y="278" fill="#fff" font-weight="bold" font-size="14">C</text>
+        <text x="138" y="118" fill="#fff" font-weight="bold" font-size="14">P</text>
+        <text x="262" y="118" fill="#fff" font-weight="bold" font-size="14">Q</text>
+        <text x="170" y="85" fill="#ffe600" font-weight="bold" font-size="13">x</text>
+        <text x="120" y="200" fill="#ffe600" font-weight="bold" font-size="13">x + 9</text>
+        <text x="237" y="85" fill="#ffe600" font-weight="bold" font-size="13">x - 3</text>
+        <text x="295" y="200" fill="#ffe600" font-weight="bold" font-size="13">x + 1</text>
+      </svg>
+    </div>
+
+    <button class="btn ghost" onclick="toggleSol(this)">نمایش پاسخ 👀</button>
+    <div class="solution">
+      <div class="st">✅ حل گام‌به‌گام:</div>
+      <div class="step">۱. طبق قضیه تالس: <span class="frac"><span class="num">AP</span><span class="den">PB</span></span> = <span class="frac"><span class="num">AQ</span><span class="den">QC</span></span></div>
+      <div class="step">۲. جای‌گذاری مقادیر: <span class="frac"><span class="num">x</span><span class="den">x+9</span></span> = <span class="frac"><span class="num">x-3</span><span class="den">x+1</span></span></div>
+      <div class="step">۳. طرفین وسطین: <span class="m">x(x+1) = (x+9)(x-3)</span></div>
+      <div class="step">۴. بسط دادن: <span class="m">x² + x = x² - 3x + 9x - 27</span></div>
+      <div class="step">۵. ساده‌سازی: <span class="m">x = 6x - 27</span> ⟹ <span class="m">5x = 27</span> ⟹ <span class="m">x = 27/5 = 5.4</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>مثال ۲</h3>
+    <p>در مثلث <span class="m">ABC</span>، خط <span class="m">DE</span> <span class="par-sym"></span> <span class="m">BC</span> است. اگر <span class="m">AD = 3</span>، <span class="m">DB = 5</span> و <span class="m">AE = 4.5</span> باشد، طول <span class="m">EC</span> چند است؟</p>
+    <button class="btn ghost" onclick="toggleSol(this)">نمایش پاسخ 👀</button>
+    <div class="solution">
+      <div class="st">✅ حل:</div>
+      <div class="step">طبق قضیه تالس: <span class="frac"><span class="num">3</span><span class="den">5</span></span> = <span class="frac"><span class="num">4.5</span><span class="den">EC</span></span> ⟹ <span class="m">3 × EC = 22.5</span> ⟹ <span class="m">EC = 7.5</span></div>
+    </div>
+  </div>
+
+  <div class="nextbtn">
+    <button class="btn mag" onclick="goPage('p-apply')">کاربردهای واقعی 🌍</button>
+  </div>
+</section>
+
+<!-- ================= APPLICATIONS ================= -->
+<section class="page" id="p-apply">
+  <div class="card">
+    <h2>🌍 قضیه تالس در دنیای واقعی</h2>
+    <p>دو کاربرد بسیار مهم و جذاب از این قضیه را به صورت تعاملی ببینیم.</p>
+  </div>
+
+  <!-- Application 1: Pyramid -->
+  <div class="card magenta">
+    <h3>🏛️ تالس و هرم بزرگ خئوپس</h3>
+    <p>تالس برای اندازه‌گیری ارتفاع هرم، از <b class="hl">تناسب سایه‌ها</b> استفاده کرد. چون پرتوهای خورشید موازی هستند، قضیه تالس برقرار می‌شود. مراحل را ببینید:</p>
+
+    <div class="proof-container" id="proof-pyramid" style="border-color: rgba(255,47,208,.3);">
+      <div class="proof-step-display" id="py-text" style="border-right-color: var(--magenta);"></div>
+      
+      <div class="figwrap" style="background: rgba(0,0,0,0.3); padding: 10px;">
+        <svg id="svg-py" viewBox="0 0 550 350">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffe600" />
+            </marker>
+          </defs>
+
+          <line x1="0" y1="300" x2="550" y2="300" stroke="#5a6a8a" stroke-width="2" />
+          
+          <line x1="60" y1="300" x2="160" y2="300" stroke="#111" stroke-width="8" stroke-linecap="round" opacity="0.8" id="py-shadow-stick"/>
+          <polygon points="220,300 420,300 520,300" fill="#111" opacity="0.8" id="py-shadow-pyr"/>
+
+          <line x1="0" y1="140" x2="160" y2="300" class="line-sun" marker-end="url(#arrow)" id="py-ray1" style="opacity:0;"/>
+          <line x1="250" y1="30" x2="520" y2="300" class="line-sun" marker-end="url(#arrow)" id="py-ray2" style="opacity:0;"/>
+          <line x1="100" y1="-100" x2="280" y2="80" class="line-sun" marker-end="url(#arrow)" id="py-ray3" style="opacity:0;"/>
+
+          <line x1="60" y1="300" x2="60" y2="200" stroke="#8B4513" stroke-width="5" stroke-linecap="round" id="py-stick" />
+          <circle cx="60" cy="200" r="3" fill="#8B4513" id="py-stick-top" />
+          
+          <polygon points="320,100 220,300 320,330" fill="rgba(160, 107, 255, 0.15)" stroke="#a06bff" stroke-width="2" stroke-linejoin="round" id="py-pyr-left" />
+          <polygon points="320,100 420,300 320,330" fill="rgba(160, 107, 255, 0.4)" stroke="#a06bff" stroke-width="2" stroke-linejoin="round" id="py-pyr-right" />
+          
+          <polygon points="60,300 60,200 160,300" id="py-tri-stick" fill="transparent" />
+          <polygon points="220,300 320,100 520,300" id="py-tri-pyr" fill="transparent" />
+          
+          <text x="50" y="320" class="label" fill="#8B4513" id="py-lbl-stick">چوب</text>
+          <text x="110" y="320" class="label" fill="#fff" opacity="0.6" id="py-lbl-s1">سایه</text>
+          <text x="320" y="70" class="label" fill="#a06bff" id="py-lbl-pyr">هرم</text>
+          <text x="470" y="320" class="label" fill="#fff" opacity="0.6" id="py-lbl-s2">سایه</text>
+        </svg>
+      </div>
+
+      <div class="proof-controls">
+        <button class="proof-btn" onclick="prevStepPy()" id="py-btn-prev" disabled>مرحله قبل</button>
+        <button class="proof-btn primary" onclick="nextStepPy()" id="py-btn-next" style="background: linear-gradient(135deg, #ff2fd0, #a06bff); color:#fff;">شروع اثبات</button>
+      </div>
+    </div>
+
+    <div class="math-block" id="py-formula" style="opacity:0; min-height: 60px; display: none;"></div>
+    
+    <div class="note" style="margin-top:16px;">
+      <strong>مسئله:</strong> اگر چوبی به ارتفاع <span class="m">2 m</span> سایه‌ای به طول <span class="m">1.5 m</span> داشته باشد و سایه‌ی هرم <span class="m">120 m</span> باشد، ارتفاع هرم چقدر است؟
+    </div>
+    <button class="btn ghost" onclick="toggleSol(this)">نمایش پاسخ محاسبه 👀</button>
+    <div class="solution">
+      <div class="st">✅ حل:</div>
+      <div class="step"><span class="frac"><span class="num">2</span><span class="den">1.5</span></span> = <span class="frac"><span class="num">h</span><span class="den">120</span></span> ⟹ <span class="m">h = 160 m</span></div>
+    </div>
+  </div>
+
+  <!-- Application 2: Segment Division -->
+  <div class="card lime">
+    <h3>📏 تقسیم پاره‌خط به نسبت معین</h3>
+    <p>فرض کنید می‌خواهیم پاره‌خط <span class="m">AB</span> را به نسبت <span class="m">2 : 3</span> تقسیم کنیم. مراحل ساخت هندسی را ببینید:</p>
+
+    <div class="proof-container" id="proof-segment" style="border-color: rgba(157,255,0,.3);">
+      <div class="proof-step-display" id="seg-text" style="border-right-color: var(--lime);"></div>
+      
+      <div class="figwrap" style="background: rgba(0,0,0,0.3); padding: 10px;">
+        <svg id="svg-seg" viewBox="0 0 400 350">
+          <line x1="50" y1="300" x2="350" y2="300" stroke="#00f0ff" stroke-width="4" stroke-linecap="round" id="seg-ab" />
+          <text x="40" y="325" class="label" fill="#00f0ff" id="seg-lbl-a">A</text>
+          <text x="360" y="325" class="label" fill="#00f0ff" id="seg-lbl-b">B</text>
+
+          <line x1="50" y1="300" x2="250" y2="150" stroke="#5a6a8a" stroke-width="2" id="seg-ray" style="opacity:0;"/>
+          
+          <g id="seg-pts" style="opacity:0;">
+            <circle cx="90" cy="270" r="4" fill="#a06bff" />
+            <circle cx="130" cy="240" r="4" fill="#a06bff" />
+            <circle cx="170" cy="210" r="4" fill="#a06bff" />
+            <circle cx="210" cy="180" r="4" fill="#a06bff" />
+            <circle cx="250" cy="150" r="4" fill="#ffe600" />
+            <text x="70" y="275" class="label" fill="#a06bff" font-size="12">1</text>
+            <text x="110" y="245" class="label" fill="#a06bff" font-size="12">2</text>
+            <text x="150" y="215" class="label" fill="#a06bff" font-size="12">3</text>
+            <text x="190" y="185" class="label" fill="#a06bff" font-size="12">4</text>
+            <text x="235" y="145" class="label" fill="#ffe600" font-size="12">5</text>
+          </g>
+
+          <line x1="250" y1="150" x2="350" y2="300" stroke="#a06bff" stroke-width="2" stroke-dasharray="5 5" id="seg-line5b" style="opacity:0;"/>
+
+          <line x1="130" y1="240" x2="170" y2="300" stroke="#9dff00" stroke-width="3" id="seg-parallel" style="opacity:0;"/>
+          <circle cx="170" cy="300" r="5" fill="#9dff00" id="seg-pt-c" style="opacity:0;"/>
+          <text x="170" y="325" class="label" fill="#9dff00" id="seg-lbl-c">C</text>
+        </svg>
+      </div>
+
+      <div class="proof-controls">
+        <button class="proof-btn" onclick="prevStepSeg()" id="seg-btn-prev" disabled>مرحله قبل</button>
+        <button class="proof-btn primary" onclick="nextStepSeg()" id="seg-btn-next" style="background: linear-gradient(135deg, #9dff00, #00f0ff); color:#000;">شروع ساخت</button>
+      </div>
+    </div>
+    
+    <div class="math-block" id="seg-formula" style="opacity:0; min-height: 60px; display: none;"></div>
+  </div>
+
+  <div class="nextbtn">
+    <button class="btn mag" onclick="goPage('p-quiz')">برو سراغ آزمون 🎯</button>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="page" id="p-quiz">
+  <div class="score-bar" style="position:sticky;top:56px;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;margin-bottom:14px;border-radius:14px;background:linear-gradient(135deg, rgba(0,240,255,.14), rgba(160,107,255,.14));border:1px solid rgba(0,240,255,.35);backdrop-filter:blur(8px);font-weight:700;font-size:14px;">
+    <span>🎯 امتیاز تو</span>
+    <b id="scoreVal" style="color:var(--lime);font-family:monospace;font-size:17px;">۰</b>
+    <span id="scoreTotal">از ۸</span>
+  </div>
+
+  <div class="card">
+    <h2>🎯 آزمون تعاملی</h2>
+    <p>روی گزینه‌ی درست کلیک کن.</p>
+  </div>
+
+  <div id="quizBox"></div>
+
+  <div class="nextbtn">
+    <button class="btn" onclick="resetQuiz()">🔄 آزمون مجدد</button>
+  </div>
+</section>
+
+</main>
+
+<footer>طراح: <b>مژگان بنی‌اسدآزاد</b> 💠</footer>
+
+<script>
+/* ==================== HELPERS ==================== */
+const NS = 'http://www.w3.org/2000/svg';
+const FA = '۰۱۲۳۴۵۶۷۸۹';
+const toFa = s => String(s).replace(/\d/g, d => FA[+d]);
+
+function svgEl(tag, attrs, text){
+  const e = document.createElementNS(NS, tag);
+  if(attrs) for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(text !== undefined) e.textContent = text;
+  return e;
+}
+const $ = id => document.getElementById(id);
+
+/* ==================== SOUND EFFECT ==================== */
+let audioCtx = null;
+function playClickSound() {
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+    
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+  } catch (e) {
+    // Ignore audio errors
+  }
+}
+
+/* ==================== NAVIGATION ==================== */
+function goPage(id){
+  playClickSound();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === id);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(id === 'p-converse') drawC();
+}
+document.querySelectorAll('.nav button').forEach(b => {
+  b.addEventListener('click', () => goPage(b.dataset.page));
+});
+
+/* ==================== SOLUTION TOGGLE ==================== */
+function toggleSol(btn){
+  playClickSound();
+  const sol = btn.nextElementSibling;
+  const isHidden = sol.style.display === 'none' || sol.style.display === '';
+  sol.style.display = isHidden ? 'block' : 'none';
+  btn.textContent = isHidden ? 'پنهان کردن پاسخ 🙈' : 'نمایش پاسخ 👀';
+}
+
+/* ==================== TYPEWRITER EFFECT ==================== */
+let typeTimer = null;
+function typeHTML(element, html, speed, callback) {
+    if (typeTimer) clearTimeout(typeTimer);
+    element.innerHTML = '';
+    let i = 0;
+    function type() {
+        if (i < html.length) {
+            if (html[i] === '<') {
+                const end = html.indexOf('>', i);
+                if (end !== -1) {
+                    element.innerHTML += html.slice(i, end + 1);
+                    i = end + 1;
+                    type();
+                    return;
+                }
+            }
+            element.innerHTML += html[i];
+            i++;
+            typeTimer = setTimeout(type, speed);
+        } else {
+            if (callback) callback();
+        }
+    }
+    type();
+}
+
+/* ==========================================================
+   PROOF 1: AREA METHOD (Step-by-Step Interactive)
+   ========================================================== */
+let step1 = 0;
+const p1_steps = [
+  {
+    title: "مرحله ۰: فرض و حکم",
+    text: "در مثلث ABC، خط DE را موازی BC رسم کرده‌ایم. می‌خواهیم ثابت کنیم <span class='frac'><span class='num'>AD</span><span class='den'>DB</span></span> = <span class='frac'><span class='num'>AE</span><span class='den'>EC</span></span>.",
+    formula: ""
+  },
+  {
+    title: "مرحله ۱: رسم خط کمکی BE و مقایسه مساحت‌ها",
+    text: "نقاط B و E را به هم وصل می‌کنیم. از E ارتفاع EH₁ را بر ضلع AB رسم می‌کنیم. حالا مساحت مثلث ADE برابر است با (½ × AD × EH₁) و مساحت مثلث DEB برابر است با (½ × DB × EH₁). اگر این دو مساحت را تقسیم کنیم، حاصل برابر با نسبت AD به DB خواهد بود.",
+    formula: `<span class="frac"><span class="num">S<sub>ADE</sub></span><span class="den">S<sub>DEB</sub></span></span> = <span class="frac"><span class="num">½ × AD × EH₁</span><span class="den">½ × DB × EH₁</span></span> = <span class="frac"><span class="num">AD</span><span class="den">DB</span></span>`
+  },
+  {
+    title: "مرحله ۲: رسم خط کمکی CD و مقایسه مساحت‌ها",
+    text: "نقاط C و D را به هم وصل می‌کنیم. از D ارتفاع DH₂ را بر ضلع AC رسم می‌کنیم. به همین ترتیب، مساحت مثلث ADE برابر است با (½ × AE × DH₂) و مساحت مثلث DEC برابر است با (½ × EC × DH₂). با تقسیم این دو، نسبت AE به EC به دست می‌آید.",
+    formula: `<span class="frac"><span class="num">S<sub>ADE</sub></span><span class="den">S<sub>DEC</sub></span></span> = <span class="frac"><span class="num">½ × AE × DH₂</span><span class="den">½ × EC × DH₂</span></span> = <span class="frac"><span class="num">AE</span><span class="den">EC</span></span>`
+  },
+  {
+    title: "مرحله ۳: اثبات برابری مساحت‌های DEB و DEC",
+    text: "حالا باید ثابت کنیم مساحت مثلث DEB با مساحت مثلث DEC برابر است. این دو مثلث دارای قاعده مشترک DE هستند. خط DE را با نقطه‌چین امتداد می‌دهیم. از نقاط B و C بر این امتداد عمود می‌کنیم (BM و CN). چون DE || BC است، فاصله این دو خط موازی همیشه ثابت است، پس BM = CN. بنابراین دو مثلث دارای قاعده و ارتفاع برابر هستند و مساحت‌شان برابر می‌شود.",
+    formula: `<span class="m">S<sub>DEB</sub> = S<sub>DEC</sub></span>`
+  },
+  {
+    title: "مرحله ۴: نتیجه‌گیری نهایی",
+    text: "از مرحله ۱ داریم: (AD/DB = S<sub>ADE</sub> / S<sub>DEB</sub>). از مرحله ۳ می‌دانیم S<sub>DEB</sub> = S<sub>DEC</sub>. پس می‌توان نوشت: (AD/DB = S<sub>ADE</sub> / S<sub>DEC</sub>). از طرفی مرحله ۲ نشان داد که (S<sub>ADE</sub> / S<sub>DEC</sub> = AE/EC). با کنار هم گذاشتن این تساوی‌ها، حکم ثابت می‌شود.",
+    formula: `<span class="frac"><span class="num">AD</span><span class="den">DB</span></span> = <span class="frac"><span class="num">S<sub>ADE</sub></span><span class="den">S<sub>DEB</sub></span></span> = <span class="frac"><span class="num">S<sub>ADE</sub></span><span class="den">S<sub>DEC</sub></span></span> = <span class="frac"><span class="num">AE</span><span class="den">EC</span></span> <span style="color:var(--lime);font-size:1.2em;margin-right:10px;">∎</span>`
+  }
+];
+
+function updateStep1() {
+  const data = p1_steps[step1];
+  
+  const elements = {
+    'p1-line-de': 0, 'p1-pt-d': 0, 'p1-pt-e': 0, 'p1-lbl-d': 0, 'p1-lbl-e': 0,
+    'p1-line-be': 1, 'p1-line-eh': 1, 'p1-ra-eh': 1, 'p1-lbl-h1': 1,
+    'p1-line-cd': 2, 'p1-line-dh': 2, 'p1-ra-dh': 2, 'p1-lbl-h2': 2,
+    'p1-line-ext': 3, 'p1-line-bm': 3, 'p1-line-cn': 3, 'p1-ra-bm': 3, 'p1-ra-cn': 3, 'p1-lbl-m': 3, 'p1-lbl-n': 3
+  };
+
+  for (let id in elements) {
+    const el = $(id);
+    if (el) el.style.opacity = step1 >= elements[id] ? 1 : 0;
+  }
+
+  const tris = ['p1-tri-ade', 'p1-tri-deb', 'p1-tri-dec'];
+  tris.forEach(id => {
+    const el = $(id);
+    if (el) el.setAttribute('fill', 'transparent');
+  });
+
+  if (step1 === 1) {
+    $('p1-tri-ade').setAttribute('fill', 'rgba(255, 47, 208, 0.2)');
+    $('p1-tri-deb').setAttribute('fill', 'rgba(160, 107, 255, 0.2)');
+  } else if (step1 === 2) {
+    $('p1-tri-ade').setAttribute('fill', 'rgba(255, 47, 208, 0.2)');
+    $('p1-tri-dec').setAttribute('fill', 'rgba(157, 255, 0, 0.2)');
+  } else if (step1 === 3) {
+    $('p1-tri-deb').setAttribute('fill', 'rgba(255, 230, 0, 0.2)');
+    $('p1-tri-dec').setAttribute('fill', 'rgba(255, 230, 0, 0.2)');
+  }
+
+  typeHTML($('p1-text'), `<span class="title">${data.title}</span>${data.text}`, 15, () => {
+    if (data.formula) {
+      $('p1-formula').innerHTML = data.formula;
+      $('p1-formula').style.display = 'flex';
+      $('p1-formula').style.opacity = 1;
+    } else {
+      $('p1-formula').style.display = 'none';
+    }
+  });
+
+  $('p1-btn-prev').disabled = step1 === 0;
+  $('p1-btn-next').disabled = step1 === p1_steps.length - 1;
+  $('p1-btn-next').textContent = step1 === 0 ? 'شروع اثبات' : (step1 === p1_steps.length - 1 ? 'پایان اثبات' : 'مرحله بعد');
+}
+
+function nextStep1() { playClickSound(); if (step1 < p1_steps.length - 1) { step1++; updateStep1(); } }
+function prevStep1() { playClickSound(); if (step1 > 0) { step1--; updateStep1(); } }
+
+/* ==========================================================
+   PROOF 2: PARALLELOGRAM METHOD (Step-by-Step Interactive)
+   ========================================================== */
+let step2 = 0;
+const p2_steps = [
+  {
+    title: "مرحله ۰: فرض جدید",
+    text: "در مثلث ABC داریم DE || BC. خطی از E موازی AB رسم می‌کنیم تا BC را در F قطع کند.",
+    formula: ""
+  },
+  {
+    title: "مرحله ۱: تشکیل متوازی‌الاضلاع DBFE",
+    text: "چون DE || BC (پس DE || BF) و EF || AB (پس EF || DB) است، چهارضلعی DBFE دو جفت ضلع موازی دارد. پس متوازی‌الاضلاع است.",
+    formula: `<span class="m" style="font-family:'Vazirmatn'; font-size:1em;">چهارضلعی DBFE متوازی‌الاضلاع است</span>`
+  },
+  {
+    title: "مرحله ۲: نتیجه‌گیری از متوازی‌الاضلاع",
+    text: "در متوازی‌الاضلاع، اضلاع مقابل با هم برابرند. پس ضلع DE با ضلع BF برابر است.",
+    formula: `<span class="m">DE = BF</span>`
+  },
+  {
+    title: "مرحله ۳: اعمال قضیه تالس روی EF || AB",
+    text: "در مثلث ABC، خط EF موازی ضلع AB است. طبق قضیه تالس، نسبت پاره‌های روی ضلع BC با ضلع AC برابر است.",
+    formula: `<span class="frac"><span class="num">BF</span><span class="den">BC</span></span> = <span class="frac"><span class="num">AE</span><span class="den">AC</span></span>`
+  },
+  {
+    title: "مرحله ۴: جایگذاری DE به جای BF",
+    text: "چون از مرحله ۲ می‌دانیم DE = BF، به جای BF در نسبت بالا، DE را قرار می‌دهیم.",
+    formula: `<span class="frac"><span class="num">DE</span><span class="den">BC</span></span> = <span class="frac"><span class="num">AE</span><span class="den">AC</span></span>`
+  },
+  {
+    title: "مرحله ۵: نتیجه‌گیری نهایی (تعمیم)",
+    text: "می‌دانیم نسبت AE/AC با AD/AB برابر است (جزء به کل). پس نسبت پاره‌خط موازی DE به ضلع BC هم با همین نسبت‌ها برابر می‌شود. این یعنی مثلث ADE با کل مثلث ABC متشابه است.",
+    formula: `<span class="frac"><span class="num">AD</span><span class="den">AB</span></span> = <span class="frac"><span class="num">AE</span><span class="den">AC</span></span> = <span class="frac"><span class="num">DE</span><span class="den">BC</span></span> <span style="color:var(--lime);font-size:1.2em;margin-right:10px;">∎</span>`
+  }
+];
+
+function updateStep2() {
+  const data = p2_steps[step2];
+  
+  const elements = {
+    'p2-line-de': 0,
+    'p2-line-ef': 1, 'p2-pt-f': 1, 'p2-lbl-f': 1, 'p2-para-dbfe': 1,
+    'p2-seg-bf': 2, 'p2-seg-de': 2
+  };
+
+  for (let id in elements) {
+    const el = $(id);
+    if (el) el.style.opacity = step2 >= elements[id] ? 1 : 0;
+  }
+
+  typeHTML($('p2-text'), `<span class="title" style="color: var(--lime);">${data.title}</span>${data.text}`, 15, () => {
+    if (data.formula) {
+      $('p2-formula').innerHTML = data.formula;
+      $('p2-formula').style.display = 'flex';
+      $('p2-formula').style.opacity = 1;
+    } else {
+      $('p2-formula').style.display = 'none';
+    }
+  });
+
+  $('p2-btn-prev').disabled = step2 === 0;
+  $('p2-btn-next').disabled = step2 === p2_steps.length - 1;
+  $('p2-btn-next').textContent = step2 === 0 ? 'شروع اثبات' : (step2 === p2_steps.length - 1 ? 'پایان اثبات' : 'مرحله بعد');
+}
+
+function nextStep2() { playClickSound(); if (step2 < p2_steps.length - 1) { step2++; updateStep2(); } }
+function prevStep2() { playClickSound(); if (step2 > 0) { step2--; updateStep2(); } }
+
+/* ==========================================================
+   APPLICATION 1: PYRAMID (Step-by-Step Interactive)
+   ========================================================== */
+let stepPy = 0;
+const py_steps = [
+  {
+    title: "مرحله ۰: مشاهده هرم و چوب",
+    text: "تالس یک چوب را در کنار هرم فرو کرد. خورشید می‌تابد و هر دو شیء (چوب و هرم) سایه ایجاد می‌کنند.",
+    formula: ""
+  },
+  {
+    title: "مرحله ۱: پرتوهای موازی خورشید",
+    text: "نکته کلیدی این است که پرتوهای خورشید به دلیل فاصله زیاد، به صورت <b>موازی</b> به زمین می‌تابند. این خطوط موازی، دو مثلث قائم‌الزاویه ایجاد می‌کنند.",
+    formula: ""
+  },
+  {
+    title: "مرحله ۲: تشکیل مثلث‌های متشابه",
+    text: "مثلث ایجاد شده توسط چوب و سایه‌اش، با مثلث ایجاد شده توسط هرم و سایه‌اش، دارای زوایای برابر (به دلیل موازی بودن پرتوها) هستند. پس این دو مثلث <b>متشابه</b>اند.",
+    formula: `<span style="font-family:'Vazirmatn'; font-size:0.9em;">مثلث چوب ~ مثلث هرم</span>`
+  },
+  {
+    title: "مرحله ۳: نوشتن تناسب (قضیه تالس)",
+    text: "در مثلث‌های متشابه، نسبت اضلاع متناظر با هم برابر است. بنابراین نسبت ارتفاع چوب به سایه‌اش، با نسبت ارتفاع هرم به سایه‌اش برابر است.",
+    formula: `<span class="frac"><span class="num">h<sub>چوب</sub></span><span class="den">سایه چوب</span></span> = <span class="frac"><span class="num">h<sub>هرم</sub></span><span class="den">سایه هرم</span></span> <span style="color:var(--lime);font-size:1.2em;margin-right:10px;">∎</span>`
+  }
+];
+
+function updateStepPy() {
+  const data = py_steps[stepPy];
+  
+  const elements = {
+    'py-ray1': 1, 'py-ray2': 1, 'py-ray3': 1,
+    'py-tri-stick': 2, 'py-tri-pyr': 2
+  };
+
+  for (let id in elements) {
+    const el = $(id);
+    if (el) el.style.opacity = stepPy >= elements[id] ? 1 : 0;
+  }
+
+  $('py-tri-stick').setAttribute('fill', 'transparent');
+  $('py-tri-stick').setAttribute('stroke', 'transparent');
+  $('py-tri-pyr').setAttribute('fill', 'transparent');
+  $('py-tri-pyr').setAttribute('stroke', 'transparent');
+  
+  if (stepPy === 2) {
+    $('py-tri-stick').setAttribute('fill', 'rgba(0, 240, 255, 0.2)');
+    $('py-tri-stick').setAttribute('stroke', '#00f0ff');
+    $('py-tri-stick').setAttribute('stroke-width', '2');
+    
+    $('py-tri-pyr').setAttribute('fill', 'rgba(255, 47, 208, 0.2)');
+    $('py-tri-pyr').setAttribute('stroke', '#ff2fd0');
+    $('py-tri-pyr').setAttribute('stroke-width', '2');
+  }
+
+  typeHTML($('py-text'), `<span class="title" style="color: var(--magenta);">${data.title}</span>${data.text}`, 15, () => {
+    if (data.formula) {
+      $('py-formula').innerHTML = data.formula;
+      $('py-formula').style.display = 'flex';
+      $('py-formula').style.opacity = 1;
+    } else {
+      $('py-formula').style.display = 'none';
+    }
+  });
+
+  $('py-btn-prev').disabled = stepPy === 0;
+  $('py-btn-next').disabled = stepPy === py_steps.length - 1;
+  $('py-btn-next').textContent = stepPy === 0 ? 'شروع' : (stepPy === py_steps.length - 1 ? 'پایان' : 'مرحله بعد');
+}
+
+function nextStepPy() { playClickSound(); if (stepPy < py_steps.length - 1) { stepPy++; updateStepPy(); } }
+function prevStepPy() { playClickSound(); if (stepPy > 0) { stepPy--; updateStepPy(); } }
+
+/* ==========================================================
+   APPLICATION 2: SEGMENT DIVISION (Step-by-Step Interactive)
+   ========================================================== */
+let stepSeg = 0;
+const seg_steps = [
+  {
+    title: "مرحله ۰: پاره‌خط اولیه",
+    text: "پاره‌خط AB را داریم و می‌خواهیم آن را به نسبت ۲ به ۳ تقسیم کنیم (یعنی مجموعاً ۵ قسمت).",
+    formula: ""
+  },
+  {
+    title: "مرحله ۱: رسم نیم‌خط کمکی",
+    text: "از نقطه A یک نیم‌خط دلخواه (غیر از خود پاره‌خط AB) رسم می‌کنیم.",
+    formula: ""
+  },
+  {
+    title: "مرحله ۲: جدا کردن ۵ قسمت مساوی",
+    text: "با استفاده از پرگار (با دهانه دلخواه)، روی این نیم‌خط ۵ پاره‌خط مساوی جدا می‌کنیم. نقاط به دست آمده را ۱ تا ۵ می‌نامیم. (چون نسبت ۲ به ۳ است، ۲+۳=۵)",
+    formula: ""
+  },
+  {
+    title: "مرحله ۳: وصل کردن نقطه پنجم به B",
+    text: "نقطه پنجم (آخرین نقطه) را به انتهای پاره‌خط اصلی، یعنی نقطه B وصل می‌کنیم.",
+    formula: ""
+  },
+  {
+    title: "مرحله ۴: رسم خط موازی (قضیه تالس)",
+    text: "از نقطه دوم (چون نسبت اول ۲ است)، خطی موازی با خطی که در مرحله قبل کشیدیم رسم می‌کنیم تا پاره‌خط AB را در نقطه C قطع کند.",
+    formula: ""
+  },
+  {
+    title: "مرحله ۵: نتیجه‌گیری",
+    text: "طبق قضیه تالس، چون خطوط موازی هستند، پاره‌خط AB به همان نسبتی که روی نیم‌خط جدا کردیم (۲ به ۳) تقسیم می‌شود.",
+    formula: `<span class="frac"><span class="num">AC</span><span class="den">CB</span></span> = <span class="frac"><span class="num">2</span><span class="den">3</span></span> <span style="color:var(--lime);font-size:1.2em;margin-right:10px;">∎</span>`
+  }
+];
+
+function updateStepSeg() {
+  const data = seg_steps[stepSeg];
+  
+  const elements = {
+    'seg-ray': 1,
+    'seg-pts': 2,
+    'seg-line5b': 3,
+    'seg-parallel': 4, 'seg-pt-c': 4, 'seg-lbl-c': 4
+  };
+
+  for (let id in elements) {
+    const el = $(id);
+    if (el) el.style.opacity = stepSeg >= elements[id] ? 1 : 0;
+  }
+
+  typeHTML($('seg-text'), `<span class="title" style="color: var(--lime);">${data.title}</span>${data.text}`, 15, () => {
+    if (data.formula) {
+      $('seg-formula').innerHTML = data.formula;
+      $('seg-formula').style.display = 'flex';
+      $('seg-formula').style.opacity = 1;
+    } else {
+      $('seg-formula').style.display = 'none';
+    }
+  });
+
+  $('seg-btn-prev').disabled = stepSeg === 0;
+  $('seg-btn-next').disabled = stepSeg === seg_steps.length - 1;
+  $('seg-btn-next').textContent = stepSeg === 0 ? 'شروع ساخت' : (stepSeg === seg_steps.length - 1 ? 'پایان' : 'مرحله بعد');
+}
+
+function nextStepSeg() { playClickSound(); if (stepSeg < seg_steps.length - 1) { stepSeg++; updateStepSeg(); } }
+function prevStepSeg() { playClickSound(); if (stepSeg > 0) { stepSeg--; updateStepSeg(); } }
+
+/* ==========================================================
+   FIGURE C  —  عکس قضیه تالس (Interactive Slider)
+   ========================================================== */
+const TRIA = {A:{x:200,y:40}, B:{x:60,y:330}, C:{x:340,y:330}};
+
+function drawC(){
+  const sD = +$('cD').value / 100;
+  const sE = +$('cE').value / 100;
+  const {A,B,C} = TRIA;
+
+  const D = {x: A.x + sD*(B.x-A.x), y: A.y + sD*(B.y-A.y)};
+  const E = {x: A.x + sE*(C.x-A.x), y: A.y + sE*(C.y-A.y)};
+
+  const isParallel = Math.abs(sD - sE) < 0.035;
+
+  const svg = $('svgC');
+  svg.innerHTML = '';
+
+  svg.appendChild(svgEl('polygon', {
+    points: `${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}`, class:'tri'
+  }));
+
+  // Draw DE line with bright colors so it's clearly visible
+  svg.appendChild(svgEl('line', {
+    x1: D.x, y1: D.y, x2: E.x, y2: E.y,
+    stroke: isParallel ? '#00f0ff' : '#ff2fd0',
+    'stroke-width': 4,
+    'stroke-linecap': 'round',
+    'stroke-dasharray': isParallel ? 'none' : '6 6',
+    style: 'filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));'
+  }));
+
+  const items = [
+    [A,'A',0,-13,'dotA'],
+    [B,'B',-14,18,'dotL'],
+    [C,'C',14,18,'dotL'],
+    [D,'D',-16,5,'dotR'],
+    [E,'E',16,5,'dotR']
+  ];
+  items.forEach(([p,name,dx,dy,cls]) => {
+    svg.appendChild(svgEl('circle',{cx:p.x,cy:p.y,r:4.5,class:cls}));
+    svg.appendChild(svgEl('text',{x:p.x+dx,y:p.y+dy},name));
+  });
+
+  const r1 = sD/(1-sD);
+  const r2 = sE/(1-sE);
+
+  $('cR1').textContent = toFa(r1.toFixed(2));
+  $('cR2').textContent = toFa(r2.toFixed(2));
+  $('lCD').textContent = toFa($('cD').value);
+  $('lCE').textContent = toFa($('cE').value);
+
+  const msg = $('cMsg');
+  if(isParallel){
+    msg.className = 'msg';
+    msg.innerHTML = 'نسبت‌ها برابرند ⟶ DE موازی BC است ✅';
+  }else{
+    msg.className = 'msg bad';
+    msg.innerHTML = 'نسبت‌ها برابر نیستند ⟶ DE موازی BC نیست ❌';
+  }
+}
+$('cD').addEventListener('input', drawC);
+$('cE').addEventListener('input', drawC);
+
+function snapParallel(){
+  playClickSound();
+  $('cE').value = $('cD').value;
+  drawC();
+}
+
+/* ==========================================================
+   QUIZ
+   ========================================================== */
+const FIG_TRI_3_5 = `
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="200,40 80,260 320,260" fill="rgba(160,107,255,.12)" stroke="#a06bff" stroke-width="2.4" stroke-linejoin="round"/>
+  <line x1="155" y1="122.5" x2="245" y2="122.5" stroke="#00f0ff" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="200" cy="40" r="4" fill="#ffe600"/>
+  <circle cx="80" cy="260" r="4" fill="#ff2fd0"/>
+  <circle cx="320" cy="260" r="4" fill="#ff2fd0"/>
+  <circle cx="155" cy="122.5" r="4" fill="#9dff00"/>
+  <circle cx="245" cy="122.5" r="4" fill="#9dff00"/>
+  <text x="200" y="28" fill="#fff" font-weight="bold" font-size="14">A</text>
+  <text x="66" y="278" fill="#fff" font-weight="bold" font-size="14">B</text>
+  <text x="334" y="278" fill="#fff" font-weight="bold" font-size="14">C</text>
+  <text x="140" y="116" fill="#fff" font-weight="bold" font-size="14">D</text>
+  <text x="260" y="116" fill="#fff" font-weight="bold" font-size="14">E</text>
+  <text x="163" y="85" fill="#ffe600" font-weight="bold" font-size="13">3</text>
+  <text x="108" y="195" fill="#ffe600" font-weight="bold" font-size="13">5</text>
+  <text x="237" y="85" fill="#ffe600" font-weight="bold" font-size="13">4.5</text>
+  <text x="295" y="195" fill="#ffe600" font-weight="bold" font-size="13">?</text>
+</svg>`;
+
+const FIG_PAR_4_6 = `
+<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+  <line x1="20" y1="40" x2="380" y2="40" stroke="#00f0ff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="20" y1="120" x2="380" y2="120" stroke="#00f0ff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="20" y1="240" x2="380" y2="240" stroke="#00f0ff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="50" y1="40" x2="250" y2="240" stroke="#3f5a94" stroke-width="2"/>
+  <line x1="340" y1="40" x2="190" y2="240" stroke="#3f5a94" stroke-width="2"/>
+  <circle cx="50" cy="40" r="4" fill="#ff2fd0"/>
+  <circle cx="130" cy="120" r="4" fill="#ff2fd0"/>
+  <circle cx="250" cy="240" r="4" fill="#ff2fd0"/>
+  <circle cx="340" cy="40" r="4" fill="#9dff00"/>
+  <circle cx="280" cy="120" r="4" fill="#9dff00"/>
+  <circle cx="190" cy="240" r="4" fill="#9dff00"/>
+  <text x="75" y="85" fill="#ffe600" font-weight="bold" font-size="13">4</text>
+  <text x="175" y="185" fill="#ffe600" font-weight="bold" font-size="13">6</text>
+  <text x="325" y="85" fill="#ffe600" font-weight="bold" font-size="13">6</text>
+  <text x="220" y="185" fill="#ffe600" font-weight="bold" font-size="13">?</text>
+</svg>`;
+
+const FIG_TRI_2_5 = `
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="200,40 80,260 320,260" fill="rgba(160,107,255,.12)" stroke="#a06bff" stroke-width="2.4" stroke-linejoin="round"/>
+  <line x1="152" y1="128" x2="248" y2="128" stroke="#00f0ff" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="200" cy="40" r="4" fill="#ffe600"/>
+  <circle cx="80" cy="260" r="4" fill="#ff2fd0"/>
+  <circle cx="320" cy="260" r="4" fill="#ff2fd0"/>
+  <circle cx="152" cy="128" r="4" fill="#9dff00"/>
+  <circle cx="248" cy="128" r="4" fill="#9dff00"/>
+  <text x="200" y="28" fill="#fff" font-weight="bold" font-size="14">A</text>
+  <text x="66" y="278" fill="#fff" font-weight="bold" font-size="14">B</text>
+  <text x="334" y="278" fill="#fff" font-weight="bold" font-size="14">C</text>
+  <text x="138" y="118" fill="#fff" font-weight="bold" font-size="14">D</text>
+  <text x="262" y="118" fill="#fff" font-weight="bold" font-size="14">E</text>
+  <text x="200" y="118" fill="#9dff00" font-weight="bold" font-size="13">DE = ?</text>
+  <text x="200" y="286" fill="#ffe600" font-weight="bold" font-size="13">BC = 15</text>
+</svg>`;
+
+const FIG_PAR_2_3 = `
+<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+  <line x1="20" y1="40" x2="380" y2="40" stroke="#00f0ff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="20" y1="120" x2="380" y2="120" stroke="#00f0ff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="20" y1="240" x2="380" y2="240" stroke="#00f0ff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="50" y1="40" x2="250" y2="240" stroke="#3f5a94" stroke-width="2"/>
+  <line x1="340" y1="40" x2="190" y2="240" stroke="#3f5a94" stroke-width="2"/>
+  <circle cx="50" cy="40" r="4" fill="#ff2fd0"/>
+  <circle cx="130" cy="120" r="4" fill="#ff2fd0"/>
+  <circle cx="250" cy="240" r="4" fill="#ff2fd0"/>
+  <circle cx="340" cy="40" r="4" fill="#9dff00"/>
+  <circle cx="280" cy="120" r="4" fill="#9dff00"/>
+  <circle cx="190" cy="240" r="4" fill="#9dff00"/>
+  <text x="42" y="30" fill="#ff2fd0" font-weight="bold" font-size="12">A</text>
+  <text x="122" y="110" fill="#ff2fd0" font-weight="bold" font-size="12">B</text>
+  <text x="255" y="260" fill="#ff2fd0" font-weight="bold" font-size="12">C</text>
+  <text x="348" y="30" fill="#9dff00" font-weight="bold" font-size="12">A′</text>
+  <text x="288" y="110" fill="#9dff00" font-weight="bold" font-size="12">B′</text>
+  <text x="182" y="260" fill="#9dff00" font-weight="bold" font-size="12">C′</text>
+  <text x="90" y="85" fill="#ffe600" font-weight="bold" font-size="13">2</text>
+  <text x="190" y="185" fill="#ffe600" font-weight="bold" font-size="13">3</text>
+  <text x="310" y="85" fill="#ffe600" font-weight="bold" font-size="13">3.2</text>
+  <text x="235" y="185" fill="#ffe600" font-weight="bold" font-size="13">?</text>
+</svg>`;
+
+const FIG_SEG_2_3 = `
+<svg viewBox="0 0 400 110" xmlns="http://www.w3.org/2000/svg">
+  <line x1="30" y1="55" x2="370" y2="55" stroke="#3f5a94" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="45" x2="30" y2="65" stroke="#ff2fd0" stroke-width="2"/>
+  <line x1="370" y1="45" x2="370" y2="65" stroke="#ff2fd0" stroke-width="2"/>
+  <line x1="166" y1="45" x2="166" y2="65" stroke="#9dff00" stroke-width="2"/>
+  <text x="100" y="38" text-anchor="middle" fill="#ffe600" font-weight="bold" font-size="13">2</text>
+  <text x="270" y="38" text-anchor="middle" fill="#ffe600" font-weight="bold" font-size="13">3</text>
+  <text x="200" y="90" text-anchor="middle" fill="#00f0ff" font-weight="bold" font-size="13">طول کل = 12</text>
+</svg>`;
+
+const quizData = [
+  {
+    q: 'در شکل زیر <span class="m">DE</span> <span class="par-sym"></span> <span class="m">BC</span> است. اگر <span class="m">AD = 3</span>، <span class="m">DB = 5</span> و <span class="m">AE = 4.5</span> باشد، طول <span class="m">EC</span> کدام است؟',
+    fig: FIG_TRI_3_5,
+    options: ['۷٫۵', '۲٫۷', '۶', '۳٫۵'],
+    correct: 0,
+    explain: 'طبق قضیه تالس: AD/DB = AE/EC ⟹ 3/5 = 4.5/EC ⟹ EC = (5 × 4.5) ÷ 3 = 7.5'
+  },
+  {
+    q: 'عکس قضیه تالس چه چیزی را نتیجه می‌دهد؟',
+    options: [
+      'اگر دو خط موازی باشند، پاره‌های متناسب ایجاد می‌شود',
+      'اگر پاره‌ها متناسب باشند، آن خط با ضلع سوم موازی است',
+      'اگر دو خط عمود باشند، پاره‌ها برابرند',
+      'اندازه‌ی زاویه‌های مثلث با هم برابر است'
+    ],
+    correct: 1,
+    explain: 'عکس قضیه تالس: اگر خطی دو ضلع مثلث را طوری قطع کند که پاره‌های متناسب ایجاد شود، آن خط با ضلع سوم موازی است.'
+  },
+  {
+    q: 'سه خط موازی، دو خط دیگر را قطع کرده‌اند (شکل زیر). روی خط اول پاره‌هایی به طول <span class="m">4</span> و <span class="m">6</span> ایجاد شده است. اگر پاره‌ی متناظر اول روی خط دوم <span class="m">6</span> باشد، پاره‌ی متناظر دوم چند است؟',
+    fig: FIG_PAR_4_6,
+    options: ['۴', '۹', '۸', '۱۲'],
+    correct: 1,
+    explain: 'طبق قضیه تالس: 4/6 = 6/x ⟹ 4x = 36 ⟹ x = 9'
+  },
+  {
+    q: 'شرط اصلی برای استفاده از قضیه تالس چیست؟',
+    options: [
+      'وجود دو مثلث متساوی‌الاضلاع',
+      'وجود خطوط موازی که دو خط را قطع می‌کنند',
+      'وجود یک زاویه‌ی قائمه',
+      'برابر بودن دو ضلع مثلث'
+    ],
+    correct: 1,
+    explain: 'قضیه تالس درباره‌ی خطوط موازی است که دو خط دیگر را قطع می‌کنند و پاره‌های متناسب ایجاد می‌کنند.'
+  },
+  {
+    q: 'در مثلث <span class="m">ABC</span> (شکل زیر)، خط <span class="m">DE</span> <span class="par-sym"></span> <span class="m">BC</span> است و <span class="m">AD/AB = 2/5</span>. اگر <span class="m">BC = 15</span> باشد، طول <span class="m">DE</span> چند است؟',
+    fig: FIG_TRI_2_5,
+    options: ['۶', '۷٫۵', '۵', '۱۰'],
+    correct: 0,
+    explain: 'از تشابه دو مثلث ADE و ABC داریم: DE/BC = AD/AB = 2/5 ⟹ DE = (2/5) × 15 = 6'
+  },
+  {
+    q: 'در شکل زیر اگر سه خط موازی باشند و <span class="m">AB = 2</span>، <span class="m">BC = 3</span> و <span class="m">A′B′ = 3.2</span> باشد، طول <span class="m">B′C′</span> کدام است؟',
+    fig: FIG_PAR_2_3,
+    options: ['۴٫۸', '۳٫۲', '۲٫۴', '۵٫۶'],
+    correct: 0,
+    explain: 'طبق قضیه تالس: AB/BC = A′B′/B′C′ ⟹ 2/3 = 3.2/x ⟹ 2x = 9.6 ⟹ x = 4.8'
+  },
+  {
+    q: 'پاره‌خطی به طول <span class="m">12</span> سانتی‌متر را با کمک قضیه تالس به نسبت <span class="m">2 : 3</span> تقسیم می‌کنیم (شکل زیر). طول بخش بزرگ‌تر چند سانتی‌متر است؟',
+    fig: FIG_SEG_2_3,
+    options: ['۴٫۸', '۷٫۲', '۶', '۸'],
+    correct: 1,
+    explain: 'مجموع نسبت‌ها 5 است. بخش بزرگ‌تر = (3/5) × 12 = 7.2 سانتی‌متر.'
+  },
+  {
+    q: 'تالس با استفاده از قضیه‌ی خود، کدام کار معروف را انجام داد؟',
+    options: [
+      'اندازه‌گیری ارتفاع هرم بزرگ خئوپس با سایه',
+      'محاسبه‌ی شعاع زمین',
+      'ساخت اولین ساعت آفتابی',
+      'اثبات گرد بودن زمین'
+    ],
+    correct: 0,
+    explain: 'روایت‌های تاریخی می‌گویند تالس با استفاده از تناسب و سایه، ارتفاع هرم بزرگ خئوپس را اندازه گرفت.'
+  }
+];
+
+let score = 0;
+let answered = 0;
+
+function renderQuiz(){
+  const box = $('quizBox');
+  box.innerHTML = '';
+  score = 0; answered = 0;
+  updateScore();
+
+  quizData.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'card q-card';
+
+    const num = document.createElement('div');
+    num.className = 'q-num';
+    num.textContent = 'سؤال ' + toFa(qi + 1);
+    card.appendChild(num);
+
+    const txt = document.createElement('div');
+    txt.className = 'q-text';
+    txt.innerHTML = q.q;
+    card.appendChild(txt);
+
+    if(q.fig){
+      const fig = document.createElement('div');
+      fig.className = 'q-fig';
+      fig.innerHTML = q.fig;
+      card.appendChild(fig);
+    }
+
+    const opts = document.createElement('div');
+    opts.className = 'options';
+
+    q.options.forEach((o, oi) => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = o;
+      b.addEventListener('click', () => {
+        if(card.dataset.done) return;
+        card.dataset.done = '1';
+        playClickSound();
+
+        opts.querySelectorAll('.opt').forEach((bb, bi) => {
+          if(bi === q.correct) bb.classList.add('correct');
+          else if(bi === oi)  bb.classList.add('wrong');
+        });
+
+        const ex = document.createElement('div');
+        ex.className = 'explain';
+        ex.innerHTML = '💡 <b>توضیح:</b> ' + q.explain;
+        card.appendChild(ex);
+
+        if(oi === q.correct) score++;
+        answered++;
+        updateScore();
+      });
+      opts.appendChild(b);
+    });
+
+    card.appendChild(opts);
+    box.appendChild(card);
+  });
+}
+
+function updateScore(){
+  $('scoreVal').textContent = toFa(score);
+  $('scoreTotal').textContent = 'از ' + toFa(quizData.length);
+}
+
+function resetQuiz(){
+  playClickSound();
+  renderQuiz();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ==========================================================
+   INIT
+   ========================================================== */
+window.addEventListener('load', () => {
+  drawC();
+  renderQuiz();
+  updateStep1();
+  updateStep2();
+  updateStepPy();
+  updateStepSeg();
+});
+</script>
+</body>
+</html>
